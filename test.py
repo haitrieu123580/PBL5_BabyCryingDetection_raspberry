@@ -71,7 +71,8 @@ def doafter5():
     l.terminate()
 
     x = feature('rec.wav')
-
+    x = np.array(x).astype('float32')
+    x = np.expand_dims(x, axis=0)
     # Chạy model
     interpreter.set_tensor(input_details[0]['index'], x)
     interpreter.invoke()
@@ -91,13 +92,15 @@ if __name__ == '__main__':
     print('Detecting......')
     newdata = []
     x = feature('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
+    x = np.array(x).astype('float32')
+    x = np.expand_dims(x, axis=0)
+    print(x.shape)
     # Chạy model
     interpreter.set_tensor(input_details[0]['index'], x)
     interpreter.invoke()
     output_data = interpreter.get_tensor(output_details[0]['index'])
 
     soundclass = int(output_data > 0.2)
-    print(soundclass)
     print(soundclass)
     print(output_data)
     # doafter5()
