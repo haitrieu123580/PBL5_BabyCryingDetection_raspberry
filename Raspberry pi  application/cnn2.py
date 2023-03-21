@@ -21,10 +21,10 @@ from python_speech_features import mfcc
 fs = 44100
 
 
-with open('D:\Development of Baby monitor device for bby cry detection\Baby-Monitor-Device-for-Baby-Cry-Detection\Baby Cry Detection\ModelWeights\cnn2.json', 'r') as f:
+with open('cnn2.json', 'r') as f:
     mymodel=model_from_json(f.read())
 
-mymodel.load_weights("D:\Development of Baby monitor device for bby cry detection\Baby-Monitor-Device-for-Baby-Cry-Detection\Baby Cry Detection\ModelWeights\cnn2.h5")
+mymodel.load_weights("cnn2.h5")
 
 
 def butter_lowpass(cutoff,fs,order=5):
@@ -97,7 +97,7 @@ def doafter5():
 if __name__ == '__main__':
     print('Detecting......')
     newdata = []
-    feats = feature('D:\Development of Baby monitor device for bby cry detection\Baby-Monitor-Device-for-Baby-Cry-Detection\Louise_01.m4a_0.wav')
+    feats = feature('Louise_01.m4a_0.wav')
     d=np.zeros((64,12))
     for i in range(len(feats)):
         d[i:,]=feats[i]
