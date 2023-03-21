@@ -6,11 +6,11 @@ import wave
 import soundfile as sf
 import time
  
-import tflite_runtime.interperter as tflite
+import tflite_runtime.interpreter as tflite
 from scipy.signal import butter,lfilter
 from python_speech_features import mfcc
 
-model_path ='model.tflite'
+model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Raspberry pi  application/model.tflite'
 with open(model_path,'rb') as f:
     model_content = f.read()
 # load model to interpreter
@@ -90,7 +90,7 @@ def doafter5():
 if __name__ == '__main__':
     print('Detecting......')
     newdata = []
-    x = feature('Louise_01.m4a_0.wav')
+    x = feature('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
     # Chạy model
     interpreter.set_tensor(input_details[0]['index'], x)
     interpreter.invoke()

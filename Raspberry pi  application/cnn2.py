@@ -18,14 +18,16 @@ import numpy as np
 
 from scipy.signal import butter,lfilter
 from python_speech_features import mfcc
+
+import tflite_runtime.interpreter as tflite
 fs = 44100
 
 
-with open('cnn2.json', 'r') as f:
-    mymodel=model_from_json(f.read())
-
-mymodel.load_weights("cnn2.h5")
-
+model_path = '/home/admin/PBL5_BabyCryingDetection_raspberry/Raspberry pi  application/model.tflite'
+with open(model_path,'rb') as f:
+    model_content = f.read()
+interpreter = tflite.Interpreter(model_content=model_content)
+interpreter.allocate_tensors()
 
 def butter_lowpass(cutoff,fs,order=5):
     nyq=0.5*fs
