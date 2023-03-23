@@ -37,9 +37,9 @@ class AlphaBot(object):
  
         self.stop()
  
-        self.PWMA = GPIO.PWM(self.ENA,500)
+        self.PWMA = GPIO.PWM(self.ENA,250)
  
-        self.PWMB = GPIO.PWM(self.ENB,500)
+        self.PWMB = GPIO.PWM(self.ENB,250)
  
         self.PWMA.start(50)
  
@@ -72,14 +72,14 @@ class AlphaBot(object):
  
  
     def forward(self):
- 
-        GPIO.output(self.IN1,GPIO.LOW)
- 
-        GPIO.output(self.IN2,GPIO.HIGH)
- 
-        GPIO.output(self.IN3,GPIO.HIGH)
- 
-        GPIO.output(self.IN4,GPIO.LOW)
+        while True:
+            GPIO.output(self.IN1,GPIO.LOW)
+    
+            GPIO.output(self.IN2,GPIO.HIGH)
+    
+            GPIO.output(self.IN3,GPIO.HIGH)
+    
+            GPIO.output(self.IN4,GPIO.LOW)
         
  
     def setPWMA(self,value):
