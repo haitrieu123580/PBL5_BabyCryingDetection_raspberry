@@ -10,7 +10,8 @@ import tflite_runtime.interpreter as tflite
 from scipy.signal import butter,lfilter
 from python_speech_features import mfcc
 from turn import AlphaBot
-
+import RPi.GPIO as GPIO 
+import time
 model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Raspberry pi  application/model.tflite'
 with open(model_path,'rb') as f:
     model_content = f.read()
