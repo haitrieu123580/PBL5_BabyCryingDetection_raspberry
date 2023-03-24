@@ -59,7 +59,7 @@ class AlphaBot(object):
             time.sleep(5)
             
             self.stop()
-            time.sleep(5)
+            time.sleep(1)
             
     def setPWMA(self,value):
  

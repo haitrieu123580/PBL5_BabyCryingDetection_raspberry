@@ -86,33 +86,33 @@ def doafter5():
     print(soundclass)
     print(output_data)
     
-    Ab = AlphaBot()
-    if soundclass==1:  
-        Ab.forward()
-    else:
-        Ab.stop()
+   # Ab = AlphaBot()
+   # if soundclass==1:  
+    #    Ab.forward()
+    #else:
+     #   Ab.stop()
     os.remove('rec.wav')
     threading.Timer(3.0, doafter5).start()
     
 if __name__ == '__main__':
     
-    Ab = AlphaBot()
+    #Ab = AlphaBot()
     
-    print('Detecting......')
-    newdata = []
-    x = feature('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
-    x = np.array(x).astype('float32')
-    x = np.expand_dims(x, axis=0)
-    print(x.shape)
-    # Chạy model
-    interpreter.set_tensor(input_details[0]['index'], x)
-    interpreter.invoke()
-    output_data = interpreter.get_tensor(output_details[0]['index'])
-    soundclass = int(output_data > 0.2)
-    print(soundclass)
-    print(output_data)
-    if soundclass !=0 :
-        Ab.forward()
-    else:
-        Ab.stop()
-    # doafter5()
+    #print('Detecting......')
+    #newdata = []
+    #x = feature('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
+    #x = np.array(x).astype('float32')
+    #x = np.expand_dims(x, axis=0)
+    #print(x.shape)
+    ## Chạy model
+    #interpreter.set_tensor(input_details[0]['index'], x)
+    #interpreter.invoke()
+    #output_data = interpreter.get_tensor(output_details[0]['index'])
+    #soundclass = int(output_data > 0.2)
+    #print(soundclass)
+    #print(output_data)
+    #if soundclass !=0 :
+    #    Ab.forward()
+    #else:
+    #    Ab.stop()
+    doafter5()
