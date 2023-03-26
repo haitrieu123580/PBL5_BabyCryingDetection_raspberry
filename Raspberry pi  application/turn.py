@@ -44,8 +44,6 @@ class AlphaBot(object):
         GPIO.output(self.IN1,GPIO.LOW)
  
         GPIO.output(self.IN2,GPIO.LOW)
- 
-        print('stop')
 
  
     def forward(self):
@@ -53,13 +51,10 @@ class AlphaBot(object):
             GPIO.output(self.IN1,GPIO.LOW)
     
             GPIO.output(self.IN2,GPIO.HIGH)
-    
-            print('go')
-            print()
             time.sleep(5)
             
             self.stop()
-            time.sleep(5)
+            time.sleep(1)
             
     def setPWMA(self,value):
  
