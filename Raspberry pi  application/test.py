@@ -24,27 +24,28 @@ output_details = interpreter.get_output_details()
 
 
 fs = 44100
-def butter_lowpass(cutoff,fs,order=5):
-    nyq=0.5*fs
-    normal_cutoff=cutoff/nyq
-    b,a=butter(order,normal_cutoff,btype='low',analog=False)
-    return b,a
-def butter_lowpass_filter(data,cutoff,fs,order=5):
-    b,a=butter_lowpass(cutoff,fs,order=order)
-    y=lfilter(b,a,data)
-    return y
+# def butter_lowpass(cutoff,fs,order=5):
+#     nyq=0.5*fs
+#     normal_cutoff=cutoff/nyq
+#     b,a=butter(order,normal_cutoff,btype='low',analog=False)
+#     return b,a
+# def butter_lowpass_filter(data,cutoff,fs,order=5):
+#     b,a=butter_lowpass(cutoff,fs,order=order)
+#     y=lfilter(b,a,data)
+#     return y
 
 def feature(soundfile):
     s,r=sf.read(soundfile)
-    s=butter_lowpass_filter(s,11025,44100,order=3)
+    # s=butter_lowpass_filter(s,11025,44100,order=3)
     x=np.array_split(s,64)
     
-    logg=[]
-    for i in x:     
-        xx=np.mean(mfcc(i,r,numcep=12,nfft=2048),axis=0)
-        logg.append(xx)
-        
-    return  logg  
+    logg=np.zeros((64,12))
+    for i in range(len(x)):
+
+        m=np.mean(mfcc(x[i],r, numcep=12,nfft=2048),axis=0)
+        logg[i,:]=m
+
+    return logg  
 def upload(file_path):
     config = {
         'apiKey': "AIzaSyAM0MseLOCEPKQVKVF-O0ZoHVwu7X14ecg",
@@ -55,7 +56,7 @@ def upload(file_path):
         "appId": "1:236232065512:web:f824cf5ef653a013c5a45d",
         "measurementId": "G-C7GVFRF735",
         "serviceAccount":'Raspberry pi  application\serviceAccount.json',
-        "databaseURL":'https://test-app-a74f1-default-rtdb.firebaseio.com/'
+        "databaseURL":'gs://smart-cradle-application-7cc0d.appspot.com/audios'
     }
     firebase = pyrebase.initialize_app(config=config)
     storage = firebase.storage()
