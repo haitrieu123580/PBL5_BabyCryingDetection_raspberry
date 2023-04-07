@@ -46,21 +46,38 @@ def feature(soundfile):
         logg[i,:]=m
 
     return logg  
+config = {
+    "apiKey": "AIzaSyA14VGe03dQqy5pmrFAxkzpYRHhc4i7Tl0",
+    "authDomain": "smart-cradle-application-7cc0d.firebaseapp.com",
+    "databaseURL": "https://smart-cradle-application-7cc0d-default-rtdb.firebaseio.com",
+    "projectId": "smart-cradle-application-7cc0d",
+    "storageBucket": "smart-cradle-application-7cc0d.appspot.com",
+    "messagingSenderId": "923331417339",
+    "appId": "1:923331417339:web:d1042a05dc64f2e37d0c5e",
+    "measurementId": "G-XQQ4RCNPJX",
+    "serviceAccount":'PBL5_BabyCryingDetection_training\Baby Cry Detection\Raspberry pi  application\smartCradle_3.json',
+}
 def upload(file_path):
-    config = {
-        'apiKey': "AIzaSyAM0MseLOCEPKQVKVF-O0ZoHVwu7X14ecg",
-        "authDomain": "test-app-a74f1.firebaseapp.com",
-        "projectId": "test-app-a74f1",
-        "storageBucket": "test-app-a74f1.appspot.com",
-        "messagingSenderId": "236232065512",
-        "appId": "1:236232065512:web:f824cf5ef653a013c5a45d",
-        "measurementId": "G-C7GVFRF735",
-        "serviceAccount":'Raspberry pi  application\serviceAccount.json',
-        "databaseURL":'gs://smart-cradle-application-7cc0d.appspot.com/audios'
-    }
     firebase = pyrebase.initialize_app(config=config)
+    # authenticate with firebase
+    auth = firebase.auth()
+    email = "tayvuong@gmail.com"
+    password = "Vuongviettay123"
+    user = auth.sign_in_with_email_and_password(email, password)
+    access_token = 'UesIQ4SLkuUwPVplMZDlbpcfzQL2'
+    print(access_token)
+
     storage = firebase.storage()
-    storage.child('sound_test.wav').put(file_path)
+    folder_name ='audios'
+    filename = 'sound_test_ras.wav'
+    
+    storage.child(folder_name + "/" + filename).put(file_path)
+    file_url = storage.child(filename).get_url(token=access_token)
+
+    db = firebase.database()
+    folder_name = 'audios'
+    audio_ref = db.child(folder_name).push(file_url)
+    
 def doafter5():
     l = None
     livesound = None
@@ -104,10 +121,9 @@ def doafter5():
     
     Ab = AlphaBot()
     if soundclass==1:  
-        Ab.forward()
+        Ab.swing()
         upload('rec.wav')
-    else:
-        Ab.stop()
+
     os.remove('rec.wav')
     threading.Timer(3.0, doafter5).start()
     
@@ -129,7 +145,7 @@ if __name__ == '__main__':
     print(soundclass)
     print(output_data)
     if soundclass !=0 :
-        Ab.forward()
-    else:
-        Ab.stop()
+        upload('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
+        Ab.swing()
+
     # doafter5()
