@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "smart-cradle-application-7cc0d",
+  "private_key_id": "30ddbe59f209b9f9276141a20f2a82bdd7df85ca",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDOHUlUHrBPg68E\nXMCAhqfw5aPmE9w/mcuHiG998LL21eSp7xy29eurTddiyM3xdf53FxZDqkibtpcm\nRhDSq7Ejs2AvmecMntGqizDGisq2KE0zrcFcgRDorxWd/UO6oLJhrNRwoGtDyHpD\nW+w7Wi9DyIXaswhAfpxxN2hrYyWHW2Ioo9DVLRHDvU9VcZmx69gCoQNcyPsEOCi8\nCznp71EpVbXVcTZrl20gDXCm6J1Fgjo8nr9xmezKZwhYWZhk1os2ecAX1p9U/4/k\nqlGdWwmPlA4fhBET7JrLBTVIr0wOxt3XBrvpoNd0RtWOhySpCxDf4svEocQXZRIR\nzxip9o9pAgMBAAECgf84yba/usXqEW8WCN54aMN2RnmupjCRM0XxZvsuyN5Bzoqp\nWGs7lzCsrKOaLZcYzdAbQ/zeY4O/68H9lmFymMpXlEeWs799dma0dC2mynSG7tfw\nD81YwFjXOplCqfxlkTY/TLRMdcRLLPEtWZ28mnHAoaEMXEdhOV7yFtqMESt5DiRB\nTXQdJKavcihZM4AEuiadN96gn0szjl1mL6DozlYpTiw1N6QyGLpoKn10hsOXsB23\nV1MMI9UjQZ9TA1ytaCtizNTAZSkcuuiZieYdfxhI3Q6RAVpZgVb844Rz10b88V68\nsQkV31yrjLiDRsvMSm5ETeJhUeNoDsodu7BlxHkCgYEA/agGHOuetcqAU8hi2RK9\nYq4/iQ77APcupqZE+Go/5KhgWmT2AgdrsK5Ah3FKo3isP3LR8ILjfkOeoswG8i9d\nk7uQonpWl8bGKYrXK9Zz6t9vP+fSv/5iKyqxJAAh03Ntf+EA+qPgUq6oKa14FdoX\noQpAvJR89sXlYhsB3XQxO1MCgYEA0ATPoyg8s7Qq69f5hnqLugTi3hHyjsYzu5fj\nbuJILfP7Z15etz9gCQObMrC3y+D46Zf9S9QazJx6oOZyhH01C9TKUwXvKzf/QJ3j\nPkMMWJYpnXlIHL287KB3fxt0zax0noSPDJt/+8kV/meaCPj61V9ORkq+r5T2BfTn\nljLnbtMCgYAMpAz57/wOzzKp+jiC3N43Rru/1tFHcQoQIAUb5B+fA40ZtCJWY4xI\nV8a7eTfhAaiD2PMBa2Ru7GvBbS2DcDzXmedRUYtzMOK7O0IR2zQXpl7i7migTMsT\nn6MISkFlSkFQuCPWWchaFn4m5ZAwdpfq3JnxS+0WVzJhOztSj/HMJQKBgQCWNAMi\nErnSILQlW+vnOLGP/ls6cscsZN2SBVjKBkaMN/I+b5wAwZg8qgf0kDoG00mokoDp\nshwvxoWdjQj/tdEJ2/rD/DL4iBSdueQOXyeZB8TA2oRBjJfQXQYsF809fdsvYxRP\nzDCbxFVHP9OvyuiEDa9dfjc2XV9QaciXYeZO1QKBgQCLRP+Y5l3+i1K0V20pPIsw\nB6D6z8UtvTe2WWLbNbXAR3Mj7xAUs8znooERml9FmFB0BQzShXczXD2zSvHwwZcq\nyTc9UOAz5EdoIf2Nn4AX146Abjt2ZgyzsibMEpo5Oh8LcKEBZS7U9hqEcGGgcjrI\nJO8EsWr2LX+op93AwBfJEg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-roaar@smart-cradle-application-7cc0d.iam.gserviceaccount.com",
+  "client_id": "109564164224899484825",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-roaar%40smart-cradle-application-7cc0d.iam.gserviceaccount.com"
+}
