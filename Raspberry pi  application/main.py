@@ -24,15 +24,6 @@ output_details = interpreter.get_output_details()
 
 
 fs = 44100
-# def butter_lowpass(cutoff,fs,order=5):
-#     nyq=0.5*fs
-#     normal_cutoff=cutoff/nyq
-#     b,a=butter(order,normal_cutoff,btype='low',analog=False)
-#     return b,a
-# def butter_lowpass_filter(data,cutoff,fs,order=5):
-#     b,a=butter_lowpass(cutoff,fs,order=order)
-#     y=lfilter(b,a,data)
-#     return y
 
 def feature(soundfile):
     s,r=sf.read(soundfile)
@@ -55,28 +46,20 @@ config = {
     "messagingSenderId": "923331417339",
     "appId": "1:923331417339:web:d1042a05dc64f2e37d0c5e",
     "measurementId": "G-XQQ4RCNPJX",
-    "serviceAccount":'PBL5_BabyCryingDetection_training\Baby Cry Detection\Raspberry pi  application\smartCradle_3.json',
 }
 def upload(file_path):
     firebase = pyrebase.initialize_app(config=config)
     # authenticate with firebase
     auth = firebase.auth()
-    email = "tayvuong@gmail.com"
-    password = "Vuongviettay123"
+    email = "raspberry@gmail.com"
+    password = "raspberry"
     user = auth.sign_in_with_email_and_password(email, password)
-    access_token = 'UesIQ4SLkuUwPVplMZDlbpcfzQL2'
-    print(access_token)
 
     storage = firebase.storage()
-    folder_name ='audios'
-    filename = 'sound_test_ras.wav'
-    
-    storage.child(folder_name + "/" + filename).put(file_path)
-    file_url = storage.child(filename).get_url(token=access_token)
-
-    db = firebase.database()
-    folder_name = 'audios'
-    audio_ref = db.child(folder_name).push(file_url)
+    userName = 'raspberry'
+    cloundfilename = f"audios/audio_{userName}"
+    storage.child(cloundfilename).put(file_path)
+    print("upload successed!")
     
 def doafter5():
     l = None
