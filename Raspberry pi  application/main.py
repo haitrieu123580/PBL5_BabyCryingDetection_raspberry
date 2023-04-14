@@ -13,6 +13,8 @@ from turn import AlphaBot
 import RPi.GPIO as GPIO 
 import pyrebase
 import time
+import firebase_admin
+from firebase_admin import credentials, messaging
 model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Raspberry pi  application/model.tflite'
 with open(model_path,'rb') as f:
     model_content = f.read()
@@ -37,29 +39,44 @@ def feature(soundfile):
         logg[i,:]=m
 
     return logg  
-config = {
-    "apiKey": "AIzaSyA14VGe03dQqy5pmrFAxkzpYRHhc4i7Tl0",
-    "authDomain": "smart-cradle-application-7cc0d.firebaseapp.com",
-    "databaseURL": "https://smart-cradle-application-7cc0d-default-rtdb.firebaseio.com",
-    "projectId": "smart-cradle-application-7cc0d",
-    "storageBucket": "smart-cradle-application-7cc0d.appspot.com",
-    "messagingSenderId": "923331417339",
-    "appId": "1:923331417339:web:d1042a05dc64f2e37d0c5e",
-    "measurementId": "G-XQQ4RCNPJX",
-}
+
 def upload(file_path):
+    config = {
+        "apiKey": "AIzaSyA14VGe03dQqy5pmrFAxkzpYRHhc4i7Tl0",
+        "authDomain": "smart-cradle-application-7cc0d.firebaseapp.com",
+        "databaseURL": "https://smart-cradle-application-7cc0d-default-rtdb.firebaseio.com",
+        "projectId": "smart-cradle-application-7cc0d",
+        "storageBucket": "smart-cradle-application-7cc0d.appspot.com",
+        "messagingSenderId": "923331417339",
+        "appId": "1:923331417339:web:d1042a05dc64f2e37d0c5e",
+        "measurementId": "G-XQQ4RCNPJX",
+    }
     firebase = pyrebase.initialize_app(config=config)
-    # authenticate with firebase
     auth = firebase.auth()
-    email = "raspberry@gmail.com"
-    password = "raspberry"
-    user = auth.sign_in_with_email_and_password(email, password)
+    email = 'raspberry@gmail.com'
+    password = 'raspberry'
+    auth.sign_in_with_email_and_password(email=email, password=password)
+    print("login successed")
 
     storage = firebase.storage()
-    userName = 'raspberry'
-    cloundfilename = f"audios/audio_{userName}"
-    storage.child(cloundfilename).put(file_path)
-    print("upload successed!")
+    cloundfilename = 'audios/test_upload_2.wav'
+    filename = file_path
+    storage.child(cloundfilename).put(filename)
+    print("upload successed")
+
+    cred = credentials.Certificate("Raspberry pi  application\smartCradle_3.json")
+    firebase_admin.initialize_app(
+        cred, {'storageBucket': "smart-cradle-application-7cc0d.appspot.com"})
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title="Baby crying detected",
+            body="Em bé đang khóc nhè",
+        ),
+        token='cmpV-4jLQBOPcZ3NykSSdg:APA91bGEfrb5SN0obNzTfQTpxWI-4AbNoWt7f5_tCbFKrTnkeTFPRuLVNy6p9ohBsoy5stG9CclSAUQIUuvhizwYGRz5FUg7vT9lQMRR_f-T4nLo1yoRHVYMf1FOUHP0kfpX4VbksJp1',
+    )
+    response = messaging.send(message)
+    # Response is a message ID string.
+    print('Successfully sent message:', response)
     
 def doafter5():
     l = None
@@ -112,23 +129,23 @@ def doafter5():
     
 if __name__ == '__main__':
     
-    Ab = AlphaBot()
+    # Ab = AlphaBot()
     
-    print('Detecting......')
-    newdata = []
-    x = feature('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
-    x = np.array(x).astype('float32')
-    x = np.expand_dims(x, axis=0)
-    print(x.shape)
-    # Chạy model
-    interpreter.set_tensor(input_details[0]['index'], x)
-    interpreter.invoke()
-    output_data = interpreter.get_tensor(output_details[0]['index'])
-    soundclass = int(output_data > 0.2)
-    print(soundclass)
-    print(output_data)
-    if soundclass !=0 :
-        upload('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
-        Ab.swing()
-
+    # print('Detecting......')
+    # newdata = []
+    # x = feature('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
+    # x = np.array(x).astype('float32')
+    # x = np.expand_dims(x, axis=0)
+    # print(x.shape)
+    # # Chạy model
+    # interpreter.set_tensor(input_details[0]['index'], x)
+    # interpreter.invoke()
+    # output_data = interpreter.get_tensor(output_details[0]['index'])
+    # soundclass = int(output_data > 0.2)
+    # print(soundclass)
+    # print(output_data)
+    # if soundclass !=0 :
+    #     upload('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
+    #     Ab.swing()
+    upload("Louise_01.m4a_0.wav")
     # doafter5()

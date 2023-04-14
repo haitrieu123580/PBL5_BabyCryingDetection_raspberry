@@ -1,4 +1,6 @@
 import pyrebase
+import firebase_admin
+from firebase_admin import credentials, messaging
 config = {
     "apiKey": "AIzaSyA14VGe03dQqy5pmrFAxkzpYRHhc4i7Tl0",
     "authDomain": "smart-cradle-application-7cc0d.firebaseapp.com",
@@ -19,13 +21,20 @@ print("login successed")
 
 storage = firebase.storage()
 cloundfilename = 'audios/test_upload_2.wav'
-filename = 'PBL5_BabyCryingDetection_training\Louise_01.m4a_0.wav'
+filename = 'Louise_01.m4a_0.wav'
 storage.child(cloundfilename).put(filename)
 print("upload successed")
 
-# file_url = storage.child(filename).get_url(None)
-# db = firebase.database()
-# folder_name = 'audios'
-# audio_ref = db.child(folder_name).push(file_url)
-
-# storage.child(cloundfilename).download('', 'downloaded.wav')
+cred = credentials.Certificate("Raspberry pi  application\smartCradle_3.json")
+firebase_admin.initialize_app(
+    cred, {'storageBucket': "smart-cradle-application-7cc0d.appspot.com"})
+message = messaging.Message(
+    notification=messaging.Notification(
+        title="Baby crying detected",
+        body="Em bé đang khóc nhè",
+    ),
+    token='cmpV-4jLQBOPcZ3NykSSdg:APA91bGEfrb5SN0obNzTfQTpxWI-4AbNoWt7f5_tCbFKrTnkeTFPRuLVNy6p9ohBsoy5stG9CclSAUQIUuvhizwYGRz5FUg7vT9lQMRR_f-T4nLo1yoRHVYMf1FOUHP0kfpX4VbksJp1',
+)
+response = messaging.send(message)
+# Response is a message ID string.
+print('Successfully sent message:', response)
