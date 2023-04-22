@@ -25,18 +25,23 @@ class AlphaBot(object):
     # Hàm điều khiển motor DC
 
     def swing(self, duration=5):
-        # Thực hiện xoay motor trong 5 giây
         self.PWMA = GPIO.PWM(self.ENA, 100)
 
         self.PWMA.start(10)
-        GPIO.output(self.IN1,GPIO.LOW)
+        # Thực hiện xoay motor trong 5 giây
+        while True:
+            
+            print('swing')
+            GPIO.output(self.IN1,GPIO.LOW)
 
-        GPIO.output(self.IN2,GPIO.HIGH)
-        time.sleep(duration)
-        # Tắt motor
-        GPIO.output(self.IN1,GPIO.LOW)
- 
-        GPIO.output(self.IN2,GPIO.LOW)
+            GPIO.output(self.IN2,GPIO.HIGH)
+            time.sleep(duration)
+            # Tắt motor
+            GPIO.output(self.IN1,GPIO.LOW)
+    
+            GPIO.output(self.IN2,GPIO.LOW)
+            print('stop')
+            break
 
 
 

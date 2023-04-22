@@ -15,7 +15,7 @@ import pyrebase
 import time
 import firebase_admin
 from firebase_admin import credentials, messaging
-model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Raspberry pi  application/model.tflite'
+model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Models/model10.tflite'
 with open(model_path,'rb') as f:
     model_content = f.read()
 # load model to interpreter
@@ -59,18 +59,18 @@ def upload(file_path):
     print("login successed")
 
     storage = firebase.storage()
-    cloundfilename = 'audios/test_upload_2.wav'
+    cloundfilename = 'audios/test_upload_rasp.wav'
     filename = file_path
     storage.child(cloundfilename).put(filename)
     print("upload successed")
 
-    cred = credentials.Certificate("Raspberry pi  application\smartCradle_3.json")
+    cred = credentials.Certificate("/home/admin/PBL5_BabyCryingDetection_raspberry/Raspberry pi  application/smartCradle_3.json")
     firebase_admin.initialize_app(
         cred, {'storageBucket': "smart-cradle-application-7cc0d.appspot.com"})
     message = messaging.Message(
         notification=messaging.Notification(
             title="Baby crying detected",
-            body="Em bé đang khóc nhè",
+            body="baby is crying!!!",
         ),
         token='cmpV-4jLQBOPcZ3NykSSdg:APA91bGEfrb5SN0obNzTfQTpxWI-4AbNoWt7f5_tCbFKrTnkeTFPRuLVNy6p9ohBsoy5stG9CclSAUQIUuvhizwYGRz5FUg7vT9lQMRR_f-T4nLo1yoRHVYMf1FOUHP0kfpX4VbksJp1',
     )
@@ -91,7 +91,7 @@ def doafter5():
     li = []
     
     timeout = time.time()+20
-    for f in range(0, int(fs/8192*2)):
+    for f in range(0, int(fs/8192*5)):
         Livesound = livesound.read(8192)
         li.append(Livesound)
         
@@ -113,7 +113,7 @@ def doafter5():
     interpreter.invoke()
     output_data = interpreter.get_tensor(output_details[0]['index'])
 
-    soundclass = int(output_data > 0.2)
+    soundclass = int(output_data > 0.5)
 
     print("Detecting....")
     print(soundclass)
@@ -121,18 +121,20 @@ def doafter5():
     
     Ab = AlphaBot()
     if soundclass==1:  
+        #upload('rec.wav')
         Ab.swing()
-        upload('rec.wav')
+    else:
+        print('not baby crying sound')
 
     os.remove('rec.wav')
-    threading.Timer(3.0, doafter5).start()
+    threading.Timer(5.0, doafter5).start()
     
 if __name__ == '__main__':
     
-    # Ab = AlphaBot()
+    #Ab = AlphaBot()
     
     # print('Detecting......')
-    # newdata = []
+    # newdata = 
     # x = feature('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
     # x = np.array(x).astype('float32')
     # x = np.expand_dims(x, axis=0)
@@ -146,6 +148,6 @@ if __name__ == '__main__':
     # print(output_data)
     # if soundclass !=0 :
     #     upload('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
-    #     Ab.swing()
-    upload("Louise_01.m4a_0.wav")
-    # doafter5()
+    #Ab.swing()
+    #upload("/home/admin/PBL5_BabyCryingDetection_raspberry/1-187207-A.wav")
+    doafter5()
