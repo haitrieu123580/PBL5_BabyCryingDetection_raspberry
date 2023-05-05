@@ -15,6 +15,7 @@ import pyrebase
 import time
 import firebase_admin
 from firebase_admin import credentials, messaging
+import camera
 model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Models/model10.tflite'
 with open(model_path,'rb') as f:
     model_content = f.read()
@@ -40,7 +41,7 @@ def feature(soundfile):
 
     return logg  
 
-def upload(file_path):
+def upload(file_path_audio, file_path_image):
     config = {
         "apiKey": "AIzaSyA14VGe03dQqy5pmrFAxkzpYRHhc4i7Tl0",
         "authDomain": "smart-cradle-application-7cc0d.firebaseapp.com",
@@ -59,9 +60,12 @@ def upload(file_path):
     print("login successed")
 
     storage = firebase.storage()
-    cloundfilename = 'audios/test_upload_rasp.wav'
-    filename = file_path
-    storage.child(cloundfilename).put(filename)
+    clound_audio_filename = 'audios/test_upload_rasp.wav'
+    filename_audio = file_path_audio
+    storage.child(clound_audio_filename).put(filename_audio)
+    clound_image_filename = 'images/test_upload_rasp.jpg'
+    filename_image = file_path_image
+    storage.child(clound_image_filename).put(filename_image)
     print("upload successed")
 
     cred = credentials.Certificate("/home/admin/PBL5_BabyCryingDetection_raspberry/Raspberry pi  application/smartCradle_3.json")
@@ -120,8 +124,9 @@ def doafter5():
     print(output_data)
     
     Ab = AlphaBot()
-    if soundclass==1:  
-        #upload('rec.wav')
+    if soundclass==1:
+        camera.capture()  
+        upload('rec.wav','baby_image.jpg')
         Ab.swing()
     else:
         print('not baby crying sound')
@@ -145,9 +150,13 @@ if __name__ == '__main__':
     # output_data = interpreter.get_tensor(output_details[0]['index'])
     # soundclass = int(output_data > 0.2)
     # print(soundclass)
-    # print(output_data)
-    # if soundclass !=0 :
-    #     upload('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
-    #Ab.swing()
-    #upload("/home/admin/PBL5_BabyCryingDetection_raspberry/1-187207-A.wav")
-    doafter5()
+    #print(output_data)
+    Ab = AlphaBot()
+    if 1:
+        camera.capture()  
+        upload('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav','baby_image.jpg')
+        Ab.swing()
+    else:
+        print('not baby crying sound')
+
+    #doafter5()
