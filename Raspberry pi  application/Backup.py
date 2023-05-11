@@ -16,6 +16,19 @@ import time
 import firebase_admin
 from firebase_admin import credentials, messaging
 import camera
+
+# Tắt các thông báo lỗi từ ALSA
+from ctypes import *
+ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
+def py_error_handler(filename, line, function, err, fmt):
+	print('skipping error message')
+c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
+asound = cdll.LoadLibrary('libasound.so')
+#set error handler
+asound.snd_lib_error_set_handler(c_error_handler)
+
+
+
 model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Models/model10.tflite'
 with open(model_path,'rb') as f:
     model_content = f.read()
@@ -100,6 +113,7 @@ def doafter5():
                                 frames_per_buffer=8192)
             livesound.start_stream()
             li = []
+            Livesound = None
             for f in range(0, int(fs/8192*5)):
                 Livesound = livesound.read(8192)
                 li.append(Livesound)
@@ -122,15 +136,22 @@ def doafter5():
             soundclass = int(output_data > 0.5)
             print("Detecting....")
             print(soundclass)
+            Ab = AlphaBot()
             if soundclass == 1:
-                image_path = camera.take_picture()
-                upload('rec.wav', image_path)
+                camera.capture()
+                upload('rec.wav', 'baby_image.jpg')
+                Ab.swing()
+            else:
+                print('not baby crying sound')
         except OSError as e:
-            if e.errno == -9999:
-                # Ignore 'Input overflowed' error
+            if e.errno == -9996 or e.errno == -9981 or e.errno == -9984:
+                # Ignore 'Alsa lib...' error
                 continue
             else:
-                raise e
+                print(f'ALSA error: {e}')
+        except Exception as e:
+            print(f"Erorr: {e}")
+			
         # Tạm dừng chương trình trong vòng 10 giây
         time.sleep(10)
 

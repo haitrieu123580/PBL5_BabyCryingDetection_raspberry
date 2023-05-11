@@ -16,6 +16,17 @@ import time
 import firebase_admin
 from firebase_admin import credentials, messaging
 import camera
+
+# Tắt các thông báo lỗi từ ALSA
+from ctypes import *
+ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
+def py_error_handler(filename, line, function, err, fmt):
+	print('skipping error message')
+c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
+asound = cdll.LoadLibrary('libasound.so')
+#set error handler
+asound.snd_lib_error_set_handler(c_error_handler)
+
 model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Models/model10.tflite'
 with open(model_path,'rb') as f:
     model_content = f.read()
@@ -40,9 +51,7 @@ def feature(soundfile):
         logg[i,:]=m
 
     return logg  
-
-def upload(file_path_audio, file_path_image):
-    config = {
+config = {
         "apiKey": "AIzaSyA14VGe03dQqy5pmrFAxkzpYRHhc4i7Tl0",
         "authDomain": "smart-cradle-application-7cc0d.firebaseapp.com",
         "databaseURL": "https://smart-cradle-application-7cc0d-default-rtdb.firebaseio.com",
@@ -51,13 +60,21 @@ def upload(file_path_audio, file_path_image):
         "messagingSenderId": "923331417339",
         "appId": "1:923331417339:web:d1042a05dc64f2e37d0c5e",
         "measurementId": "G-XQQ4RCNPJX",
-    }
-    firebase = pyrebase.initialize_app(config=config)
-    auth = firebase.auth()
-    email = 'raspberry@gmail.com'
-    password = 'raspberry'
-    auth.sign_in_with_email_and_password(email=email, password=password)
-    print("login successed")
+}
+firebase = pyrebase.initialize_app(config=config)
+
+cred = credentials.Certificate("/home/admin/PBL5_BabyCryingDetection_raspberry/Raspberry pi  application/smartCradle_3.json")
+firebase_admin.initialize_app(
+        cred, {'storageBucket': "smart-cradle-application-7cc0d.appspot.com"})
+
+def upload(file_path_audio, file_path_image):
+
+    
+    #auth = firebase.auth()
+    #email = 'raspberry@gmail.com'
+    #password = 'raspberry'
+    #auth.sign_in_with_email_and_password(email=email, password=password)
+    #print("login successed")
 
     storage = firebase.storage()
     clound_audio_filename = 'audios/test_upload_rasp.wav'
@@ -68,9 +85,7 @@ def upload(file_path_audio, file_path_image):
     storage.child(clound_image_filename).put(filename_image)
     print("upload successed")
 
-    cred = credentials.Certificate("/home/admin/PBL5_BabyCryingDetection_raspberry/Raspberry pi  application/smartCradle_3.json")
-    firebase_admin.initialize_app(
-        cred, {'storageBucket': "smart-cradle-application-7cc0d.appspot.com"})
+
     message = messaging.Message(
         notification=messaging.Notification(
             title="Baby crying detected",
@@ -88,7 +103,7 @@ def doafter5():
     l = pyaudio.PyAudio()
     livesound = l.open(format=pyaudio.paInt16,
                  channels=1,
-                 rate=fs, input=True,frames_per_buffer=8192
+                 rate=fs, input=True,frames_per_buffer=8192, input_device_index = 3
                  )
     livesound.start_stream() 
     Livesound = None
@@ -151,12 +166,12 @@ if __name__ == '__main__':
     # soundclass = int(output_data > 0.2)
     # print(soundclass)
     #print(output_data)
-    Ab = AlphaBot()
-    if 1:
-        camera.capture()  
-        upload('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav','baby_image.jpg')
-        Ab.swing()
-    else:
-        print('not baby crying sound')
+    #Ab = AlphaBot()
+    #if 1:
+    #    camera.capture()  
+    #    upload('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav','baby_image.jpg')
+    #    Ab.swing()
+    #else:
+    #    print('not baby crying sound')
 
-    #doafter5()
+    doafter5()
