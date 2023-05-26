@@ -105,12 +105,14 @@ def upload(file_path_audio, file_path_image):
 def doafter5():
     while True:
         try:
+			#start record
+            start_record = time.time()
             l = pyaudio.PyAudio()
             livesound = l.open(format=pyaudio.paInt16,
                                 channels=1,
                                 rate=fs,
                                 input=True,
-                                frames_per_buffer=8192)
+                                frames_per_buffer=8192,input_device_index = 2)
             livesound.start_stream()
             li = []
             Livesound = None
@@ -119,6 +121,7 @@ def doafter5():
                 li.append(Livesound)
             livesound.stop_stream()
             livesound.close()
+            
             waves = wave.open('rec.wav', 'w')
             waves.setnchannels(1)
             waves.setsampwidth(l.get_sample_size(pyaudio.paInt16))
@@ -126,21 +129,33 @@ def doafter5():
             waves.writeframes(b''.join(li))
             waves.close()
             l.terminate()
+            print(f'stop record {time.time()-start_record}')
+            
             x = feature('rec.wav')
             x = np.array(x).astype('float32')
             x = np.expand_dims(x, axis=0)
             # Chạy model
+            start_detect = time.time()
             interpreter.set_tensor(input_details[0]['index'], x)
             interpreter.invoke()
             output_data = interpreter.get_tensor(output_details[0]['index'])
-            soundclass = int(output_data > 0.5)
+            soundclass = int(output_data >= 0.6)
+            print(f'stop detect {time.time()-start_detect}')
             print("Detecting....")
             print(soundclass)
+            print(output_data)
+            
             Ab = AlphaBot()
             if soundclass == 1:
-                camera.capture()
+                start_cap = time.time()
+                #camera.capture()
+                print(f'stop cap {time.time()-start_cap}')
+                start_upload = time.time()
                 upload('rec.wav', 'baby_image.jpg')
+                print(f'stop upload {time.time()-start_upload}')
+                start_swing = time.time()
                 Ab.swing()
+                print(f'stop swing {time.time()-start_swing}')
             else:
                 print('not baby crying sound')
         except OSError as e:
@@ -152,34 +167,10 @@ def doafter5():
         except Exception as e:
             print(f"Erorr: {e}")
 			
-        # Tạm dừng chương trình trong vòng 10 giây
-        time.sleep(10)
+        # Tạm dừng chương trình trong vòng 20 giây
+        time.sleep(20)
 
     
 if __name__ == '__main__':
     
-    # TEST DETECT
-    # print('Detecting......')
-    # newdata = 
-    # x = feature('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav')
-    # x = np.array(x).astype('float32')
-    # x = np.expand_dims(x, axis=0)
-    # print(x.shape)
-    # # Chạy model
-    # interpreter.set_tensor(input_details[0]['index'], x)
-    # interpreter.invoke()
-    # output_data = interpreter.get_tensor(output_details[0]['index'])
-    # soundclass = int(output_data > 0.2)
-    # print(soundclass)
-    #print(output_data)
-    
-    #TEST CAMERA AND MOTOR
-    # Ab = AlphaBot()
-    # if 1:
-    #     camera.capture()  
-    #     upload('/home/admin/PBL5_BabyCryingDetection_raspberry/Louise_01.m4a_0.wav','baby_image.jpg')
-    #     Ab.swing()
-    # else:
-    #     print('not baby crying sound')
-
     doafter5()

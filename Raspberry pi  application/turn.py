@@ -27,7 +27,7 @@ class AlphaBot(object):
     def swing(self, duration=5):
         self.PWMA = GPIO.PWM(self.ENA, 100)
 
-        self.PWMA.start(10)
+        self.PWMA.start(15)
         # Thực hiện xoay motor trong 5 giây
         while True:
             
@@ -35,7 +35,7 @@ class AlphaBot(object):
             GPIO.output(self.IN1,GPIO.LOW)
 
             GPIO.output(self.IN2,GPIO.HIGH)
-            time.sleep(duration)
+            time.sleep(5)
             # Tắt motor
             GPIO.output(self.IN1,GPIO.LOW)
     
