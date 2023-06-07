@@ -1,0 +1,12 @@
+soundfile
+scipy
+python_speech_features
+pyrebase
+firebase_admin
+pyaudio
+wave
+cv2
+tflite_runtime
+numpy
+RPi.GPIO
+time
