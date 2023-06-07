@@ -29,7 +29,7 @@ asound.snd_lib_error_set_handler(c_error_handler)
 
 
 
-model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Models/model10.tflite'
+model_path ='/home/admin/PBL5_BabyCryingDetection_raspberry/Models/model11.tflite'
 with open(model_path,'rb') as f:
     model_content = f.read()
 # load model to interpreter
@@ -116,7 +116,7 @@ def doafter5():
             livesound.start_stream()
             li = []
             Livesound = None
-            for f in range(0, int(fs/8192*5)):
+            for f in range(0, int(fs/8192*2)):
                 Livesound = livesound.read(8192)
                 li.append(Livesound)
             livesound.stop_stream()
@@ -168,7 +168,7 @@ def doafter5():
             print(f"Erorr: {e}")
 			
         # Tạm dừng chương trình trong vòng 20 giây
-        time.sleep(20)
+        time.sleep(13)
 
     
 if __name__ == '__main__':
