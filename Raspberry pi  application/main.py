@@ -69,10 +69,10 @@ firebase_admin.initialize_app(
 
 def upload(file_path_audio, file_path_image):
     storage = firebase.storage()
-    clound_audio_filename = 'audios/test_upload_rasp.wav'
+    clound_audio_filename = 'audios/upload_audio.wav'
     filename_audio = file_path_audio
     storage.child(clound_audio_filename).put(filename_audio)
-    clound_image_filename = 'images/test_upload_rasp.jpg'
+    clound_image_filename = 'images/upload_image.jpg'
     filename_image = file_path_image
     storage.child(clound_image_filename).put(filename_image)
     print("Upload successed")
@@ -149,8 +149,6 @@ def detect_and_process():
             print(output)
             if soundclass ==1:
                 print("Baby crying detected!")
-                # Take picture
-                #camera.capture()
                 # Create threads for capture_upload and swing
                 upload_thread = threading.Thread(target=capture_and_upload)
                 swing_thread = threading.Thread(target=swing)
@@ -169,7 +167,7 @@ def detect_and_process():
 
             # Delete audio and image files
             os.remove("rec.wav")
-            # os.remove("baby_image.jpg")
+            os.remove("baby_image.jpg")
 
             # Calculate elapsed time
             end_record = time.time()
